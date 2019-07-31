@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Studicated</string>
+    <string name="calculate_gpa">Calculate GPA</string>
+    <string name="reminders">Reminders</string>
+</resources>

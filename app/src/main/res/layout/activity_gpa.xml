@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.andrious.listview.MainActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/prevSem"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/prev" />
+
+        <TextView
+            android:id="@+id/semester"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Semester Number:"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/semesterText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="####"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/nextSem"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:background="@drawable/next" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/gpaPreview"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Current GPA:"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/gpaText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="####"
+            android:textSize="24sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_margin="5dp"
+        android:orientation="vertical">
+
+        <ListView
+            android:id="@+id/ListView"
+            android:layout_width="fill_parent"
+            android:layout_height="500dp"
+            android:background="#C3E0F5"
+            android:divider="#FFFFFF"
+            android:dividerHeight="2dp"
+            android:footerDividersEnabled="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/addCourse"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_edge"
+            android:text="Add course"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+</LinearLayout>
