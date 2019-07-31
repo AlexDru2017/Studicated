@@ -1,5 +1,6 @@
 package com.example.studicated;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -11,7 +12,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-public class NewCourseDialog extends AppCompatDialogFragment {
+@SuppressLint("ValidFragment")
+public class NewCourseDialog extends AppCompatDialogFragment  {
+
+    public NewCourseDialog(){
+        super();
+    }
+    public NewCourseDialog(String courseName) {
+        courseNameText.setText(courseName);
+       // courseCreditsText.setText(course.getCredit());
+       //  courseGradeText.setText(course.getGrade());
+    }
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);

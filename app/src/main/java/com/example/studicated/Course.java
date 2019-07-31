@@ -34,4 +34,12 @@ public class Course {
     String credit;
     String grade;
 
+    @Override
+    public String toString() {
+        return "Course{" +
+                "name='" + name + '\'' +
+                ", credit='" + credit + '\'' +
+                ", grade='" + grade + '\'' +
+                '}';
+    }
 }
