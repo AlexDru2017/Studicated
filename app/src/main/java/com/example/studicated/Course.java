@@ -1,11 +1,19 @@
 package com.example.studicated;
 
 public class Course {
-    public Course(String name,String credit,String grade){
-        this.name=name;
-        this.credit=credit;
-        this.grade=grade;
+
+    /**
+     * @param name
+     * @param credit
+     * @param grade
+     */
+    public Course(String name, String credit, String grade) {
+        this.name = name;
+        this.credit = credit;
+        this.grade = grade;
     }
+
+
     public String getName() {
         return name;
     }

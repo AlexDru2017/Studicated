@@ -1,10 +1,15 @@
 package com.example.studicated;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -12,8 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-public class GPAActivity extends AppCompatActivity implements NewCourseDialog.NewCourseDialogListener,EditCourseDialog.EditCourseDialogListener {
+public class GPAActivity extends AppCompatActivity implements NewCourseDialog.NewCourseDialogListener, EditCourseDialog.EditCourseDialogListener {
+    public static final String SHARED_PREFS = "mySharedPrefs";
+    SharedPreferences sharedPreferences;
+    SharedPreferences.Editor editor;
+
     private int semesterNumber;
     ArrayList<Semester> semestersList;
     ListView simpleList;
@@ -27,23 +39,19 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gpa);
-
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         loadSemesters(); //loads all the semesters' grades
         semesterNumber = 1; //maybe start from the last saved semester?
-
         gpaText = (TextView) findViewById(R.id.gpaText);
         semesterText = (TextView) findViewById(R.id.semesterText);
         Button nextButton = (Button) findViewById(R.id.nextSem);
         Button prevButton = (Button) findViewById(R.id.prevSem);
         simpleList = (ListView) findViewById(R.id.ListView);
         Button addCourse = (Button) findViewById(R.id.addCourse);
-        ImageView editImage= (ImageView) findViewById(R.id.edit);
+        ImageView editImage = (ImageView) findViewById(R.id.edit);
 
         gpaText.setText(null); //CURRENTLY NULL, IF THERE ARE GRADES SAVED CALCULATE THE GPA!
         semesterText.setText(Integer.toString(semesterNumber));
-
-
-
 
 
         nextButton.setOnClickListener(new View.OnClickListener() {
@@ -57,8 +65,37 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
             public void onClick(View v) {
                 previousSemester();
             }
-        });
 
+        });
+        simpleList.setLongClickable(true);
+        simpleList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                AlertDialog alertDialog = new AlertDialog.Builder(GPAActivity.this).create();
+                alertDialog.setTitle("Delete course");
+                alertDialog.setMessage("Are you sure you want to delete?");
+                alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                courseList.remove(position);
+                                calculateGPA();
+                                Log.d("position", Integer.toString(position + 1));
+                                updatePositionInSP(position + 1);
+                                customAdapter.notifyDataSetChanged();
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+
+                return true;
+            }
+        });
 
         addCourse.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,27 +107,46 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
         });
 
 
-        customAdapter = new CustomAdapter(getApplicationContext(), courseList , getSupportFragmentManager());
+        customAdapter = new CustomAdapter(getApplicationContext(), courseList, getSupportFragmentManager());
         simpleList.setAdapter(customAdapter);
+        loadData();
+    }
 
 
+    private void updatePositionInSP(int position) {
+        Map<String, String> savedData = (Map<String, String>) sharedPreferences.getAll();
+        for (Map.Entry<String, String> entry : savedData.entrySet()) {
+            String[] key = entry.getKey().split(",");
+            if (position <= Integer.parseInt(key[1]) && semesterNumber == Integer.parseInt(key[0])) {
+                sharedPreferences.edit().remove(Integer.toString(semesterNumber) + ',' + Integer.parseInt(key[1])).commit();
+            }
+        }
+
+        for (int i = position; i <= courseList.size(); i++) {
+            saveDataToSP(courseList.get(i - 1), i);
+        }
     }
 
     @Override
     public void applyTexts(String name, String credit, String grade) {
+
         Log.d("Applying texts", name + " " + credit + " " + grade);
         Course newCourse = new Course(name, credit, grade);
         courseList.add(newCourse);
         customAdapter.notifyDataSetChanged();
+        saveDataToSP(newCourse, courseList.size());
         calculateGPA();
     }
+
     @Override
     public void applyTextsFromEdit(String name, String credit, String grade, int pos) {
         Log.d("Applying texts", name + " " + credit + " " + grade);
         courseList.get(pos).setCredit(credit);
         courseList.get(pos).setGrade(grade);
         courseList.get(pos).setName(name);
+        Course saveCourse = new Course(name, credit, grade);
         customAdapter.notifyDataSetChanged();
+        saveDataToSP(saveCourse, pos + 1);
         calculateGPA();
     }
 
@@ -112,10 +168,10 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
 
     private void nextSemester() {
         semesterNumber++;
-        if (semesterNumber > 9) {
-            Toast.makeText(GPAActivity.this, "Semester cannot be greater than 9",
+        if (semesterNumber > 10) {
+            Toast.makeText(GPAActivity.this, "Semester cannot be greater than 10",
                     Toast.LENGTH_LONG).show();
-            semesterNumber = 9;
+            semesterNumber = 10;
         }
         updateListView();
 
@@ -124,7 +180,7 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
     private void previousSemester() {
         semesterNumber--;
         if (semesterNumber < 1) {
-            Toast.makeText(GPAActivity.this, "Semester cannot be lower than one",
+            Toast.makeText(GPAActivity.this, "Semester cannot be lower than 1",
                     Toast.LENGTH_LONG).show();
             semesterNumber = 1;
         }
@@ -134,17 +190,44 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
 
     private void loadSemesters() {
         semestersList = new ArrayList<Semester>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i <= 10; i++) {
             semestersList.add(new Semester(i + 1));
         }
         courseList = semestersList.get(1).getCourses();
 
     }
 
-    private void updateListView(){
+    private void updateListView() {
         courseList = semestersList.get(semesterNumber).getCourses();
         customAdapter.swapSemesters(courseList);
         customAdapter.notifyDataSetChanged();
         semesterText.setText(Integer.toString(semesterNumber));
     }
+
+
+    public void saveDataToSP(Course newCourse, int position) {
+        editor = sharedPreferences.edit();
+        editor.putString(Integer.toString(semesterNumber) + ',' + position, newCourse.getName() + ',' + newCourse.getCredit() + ',' + newCourse.getGrade());
+        if (editor.commit())
+            Log.d("Saved course:", newCourse.getName());
+    }
+
+
+    public void loadData() {
+        editor = sharedPreferences.edit();
+        Map<String, String> savedData = (Map<String, String>) sharedPreferences.getAll();
+        if (savedData.size() > 0) {
+            SortedSet<String> keys = new TreeSet<>(savedData.keySet());
+            for (String key : keys) {
+                String[] keySplitted = key.split(",");
+                String[] values = savedData.get(key).split(",");
+                Semester semester = semestersList.get(Integer.parseInt(keySplitted[0]));
+                ArrayList<Course> courseListFromSP = semester.getCourses();
+                courseListFromSP.add(Integer.parseInt(keySplitted[1]) - 1, new Course(values[0], values[1], values[2]));
+            }
+            calculateGPA();
+            customAdapter.notifyDataSetChanged();
+        }
+    }
+
 }
