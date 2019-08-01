@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class GPAActivity extends AppCompatActivity implements NewCourseDialog.NewCourseDialogListener {
+public class GPAActivity extends AppCompatActivity implements NewCourseDialog.NewCourseDialogListener,EditCourseDialog.EditCourseDialogListener {
     private int semesterNumber;
     ArrayList<Semester> semestersList;
     ListView simpleList;
@@ -81,6 +81,15 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
         Log.d("Applying texts", name + " " + credit + " " + grade);
         Course newCourse = new Course(name, credit, grade);
         courseList.add(newCourse);
+        customAdapter.notifyDataSetChanged();
+        calculateGPA();
+    }
+    @Override
+    public void applyTextsFromEdit(String name, String credit, String grade, int pos) {
+        Log.d("Applying texts", name + " " + credit + " " + grade);
+        courseList.get(pos).setCredit(credit);
+        courseList.get(pos).setGrade(grade);
+        courseList.get(pos).setName(name);
         customAdapter.notifyDataSetChanged();
         calculateGPA();
     }

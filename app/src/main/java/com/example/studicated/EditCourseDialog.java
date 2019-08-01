@@ -1,35 +1,33 @@
 package com.example.studicated;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatDialogFragment;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 
-@SuppressLint("ValidFragment")
-public class NewCourseDialog extends AppCompatDialogFragment  {
+public class EditCourseDialog extends AppCompatDialogFragment {
 
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (NewCourseDialogListener) context;
+            listener = (EditCourseDialog.EditCourseDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "Must implement NewCourseDialogListener");
+            throw new ClassCastException(context.toString() + "Must implement EditCourseDialog");
         }
     }
 
     private EditText courseNameText;
     private EditText courseCreditsText;
     private EditText courseGradeText;
-    private NewCourseDialogListener listener;
+    private int position;
+    private EditCourseDialog.EditCourseDialogListener listener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -41,7 +39,7 @@ public class NewCourseDialog extends AppCompatDialogFragment  {
         courseGradeText = view.findViewById(R.id.course_grade);
         courseCreditsText = view.findViewById(R.id.course_credit);
 
-        builder.setView(view).setTitle("Add new course")
+        builder.setView(view).setTitle("Edit course")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -54,7 +52,7 @@ public class NewCourseDialog extends AppCompatDialogFragment  {
                         String courseName = courseNameText.getText().toString();
                         String courseCredits = courseCreditsText.getText().toString();
                         String courseGrade = courseGradeText.getText().toString();
-                        listener.applyTexts(courseName,courseCredits,courseGrade);
+                        listener.applyTextsFromEdit(courseName,courseCredits,courseGrade,position);
                     }
                 });
 
@@ -63,6 +61,8 @@ public class NewCourseDialog extends AppCompatDialogFragment  {
             courseNameText.setText((String) bundle.get("name"));
             courseGradeText.setText((String) bundle.get("grade"));
             courseCreditsText.setText((String) bundle.get("credits"));
+            position=bundle.getInt("position");
+
         }
         return builder.create();
 
@@ -70,7 +70,7 @@ public class NewCourseDialog extends AppCompatDialogFragment  {
     }
 
 
-    public interface NewCourseDialogListener {
-        void applyTexts(String name, String credit, String grade);
+    public interface EditCourseDialogListener {
+        void applyTextsFromEdit(String name, String credit, String grade,int pos);
     }
 }

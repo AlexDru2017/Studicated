@@ -1,6 +1,7 @@
 package com.example.studicated;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +18,12 @@ public class CustomAdapter extends BaseAdapter {
     Context context;
     ArrayList<Course> item;
     LayoutInflater inflter;
-    TextView name;
+
     FragmentManager fm;
+    TextView name;
+    TextView credit;
+    TextView grade;
+    int pos;
 
     public CustomAdapter(Context applicationContext, ArrayList<Course> item , FragmentManager fragMan) {
         this.context = context;
@@ -50,8 +55,8 @@ public class CustomAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.list_item, null);
         name = (TextView) view.findViewById(R.id.courseName);
-        TextView credit = (TextView) view.findViewById(R.id.credit);
-        TextView grade = (TextView) view.findViewById(R.id.grade);
+        credit = (TextView) view.findViewById(R.id.credit);
+        grade = (TextView) view.findViewById(R.id.grade);
         ImageView editImage = (ImageView) view.findViewById(R.id.edit);
         editImage.setTag(i);
 
@@ -60,10 +65,16 @@ public class CustomAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 Log.d("Image View position: ", v.getTag().toString());
-                int pos= Integer.parseInt(v.getTag().toString());
+                pos= Integer.parseInt(v.getTag().toString());
                 Log.d("current item: ", item.get(pos).toString());
-                NewCourseDialog newCourse = new NewCourseDialog(item.get(pos).getName());
-                newCourse.show(fm, "New Course Dialog");
+                Bundle args= new Bundle();
+                args.putString("name",item.get(pos).getName());
+                args.putString("grade",item.get(pos).getGrade());
+                args.putString("credits",item.get(pos).getCredit());
+                args.putInt("position",pos) ;
+                EditCourseDialog editCourse = new EditCourseDialog();
+                editCourse.setArguments(args);
+                editCourse.show(fm, "Edit_Dialog");
 
             }
         });
@@ -72,4 +83,6 @@ public class CustomAdapter extends BaseAdapter {
         grade.setText(item.get(i).getGrade());
         return view;
     }
+
+
 }
