@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button gpaButton = (Button) findViewById(R.id.gpaButton);
         Button alarmButton = (Button) findViewById(R.id.alarmButton);
-
         gpaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -24,7 +23,16 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), GPAActivity.class);
                 startActivity(intent);
             }
-    });
+        });
+        alarmButton.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.i("Button", "com.example.studicated.Alarm button was clicked");
+                Intent intent = new Intent(getApplicationContext(), AlarmActivity.class);
+                startActivity(intent);
+            }
+            });
+
 
     }
 
