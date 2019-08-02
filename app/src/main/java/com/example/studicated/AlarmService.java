@@ -27,7 +27,7 @@ public class AlarmService extends Service {
         PendingIntent pendingIntentService = PendingIntent.getActivity(this, 0, notificationIntent, 0);
         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alarmIntent, 0);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.set(AlarmManager.RTC_WAKEUP, Integer.parseInt(input) * 1000 * 60, pendingIntent);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + Integer.parseInt(input) * 1000 * 60, pendingIntent);
         Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID).
                 setContentTitle("Alarm Service").setContentText("Service").
                 setSmallIcon(R.drawable.ic_android).setContentIntent(pendingIntentService).build();
