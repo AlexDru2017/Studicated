@@ -15,8 +15,8 @@ public class AlarmActivity extends AppCompatActivity {
 
     private EditText min;
     private Switch alarmSwitch;
-    private PendingIntent pendingIntent;
-    private AlarmManager alarmManager;
+    private Intent intent;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,13 +33,14 @@ public class AlarmActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    Intent intent = new Intent(getApplicationContext(), AlarmService.class);
-                    intent.putExtra("time",min.getText().toString());
+                    intent = new Intent(getApplicationContext(), AlarmService.class);
+                    intent.putExtra("time", min.getText().toString());
                     startService(intent);
                     Toast.makeText(getApplicationContext(), "Alarm set in" + min.getText().toString() + " minutes", Toast.LENGTH_LONG).show();
                 } else {
-                    pendingIntent.cancel();
-                    alarmManager.cancel(pendingIntent);
+//                    pendingIntent.cancel();
+//                    alarmManager.cancel(pendingIntent);
+                    stopService(intent);
                 }
             }
         });
