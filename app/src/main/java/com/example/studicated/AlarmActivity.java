@@ -1,9 +1,9 @@
 package com.example.studicated;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -38,9 +38,24 @@ public class AlarmActivity extends AppCompatActivity {
                     startService(intent);
                     Toast.makeText(getApplicationContext(), "Alarm set in" + min.getText().toString() + " minutes", Toast.LENGTH_LONG).show();
                 } else {
-//                    pendingIntent.cancel();
-//                    alarmManager.cancel(pendingIntent);
-                    stopService(intent);
+                    AlertDialog alertDialog = new AlertDialog.Builder(AlarmActivity.this).create();
+                    alertDialog.setTitle("Alarm Manager");
+                    alertDialog.setMessage("Have you finished studying?");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Yes",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    stopService(intent);
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "No",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    alarmSwitch.setChecked(true);
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
                 }
             }
         });

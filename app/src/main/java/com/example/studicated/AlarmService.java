@@ -33,9 +33,9 @@ public class AlarmService extends Service {
         pendingIntent = PendingIntent.getBroadcast(getApplicationContext(), 0, alarmIntent, 0);
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + Integer.parseInt(input) * 1000 * 15, pendingIntent);
-        notification = new NotificationCompat.Builder(this, App.CHANNEL_ID).
-                setContentTitle("Alarm Service").setContentText("Service").
-                setSmallIcon(R.drawable.ic_android).setContentIntent(pendingIntentService).build();
+        notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
+                .setContentTitle("Alarm Service").setContentText("Service")
+                .setSmallIcon(R.drawable.ic_android).setContentIntent(pendingIntentService).build();
         startForeground(1, notification);
         return START_NOT_STICKY;
     }
