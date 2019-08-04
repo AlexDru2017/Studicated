@@ -11,16 +11,19 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 @SuppressLint("ValidFragment")
-public class NewCourseDialog extends AppCompatDialogFragment  {
+public class NewCourseDialog extends AppCompatDialogFragment {
 
+    private Context mContext;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
             listener = (NewCourseDialogListener) context;
+            mContext = context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString() + "Must implement NewCourseDialogListener");
         }
@@ -54,11 +57,12 @@ public class NewCourseDialog extends AppCompatDialogFragment  {
                         String courseName = courseNameText.getText().toString();
                         String courseCredits = courseCreditsText.getText().toString();
                         String courseGrade = courseGradeText.getText().toString();
-                        listener.applyTexts(courseName,courseCredits,courseGrade);
+                        listener.applyTexts(courseName, courseCredits, courseGrade);
+                        Toast.makeText(mContext.getApplicationContext(), "Grade must be between 0-100", Toast.LENGTH_LONG);
                     }
                 });
 
-        if(getArguments()!=null){
+        if (getArguments() != null) {
             Bundle bundle = getArguments();
             courseNameText.setText((String) bundle.get("name"));
             courseGradeText.setText((String) bundle.get("grade"));

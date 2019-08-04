@@ -34,8 +34,10 @@ public class AlarmService extends Service {
         alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + Integer.parseInt(input) * 1000 * 15, pendingIntent);
         notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
-                .setContentTitle("Alarm Service").setContentText("Service")
-                .setSmallIcon(R.drawable.ic_android).setContentIntent(pendingIntentService).build();
+                .setContentTitle("Alarm Service")
+                .setContentText("Service")
+                .setSmallIcon(R.drawable.ic_android)
+                .setContentIntent(pendingIntentService).build();
         startForeground(1, notification);
         return START_NOT_STICKY;
     }
@@ -43,10 +45,12 @@ public class AlarmService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        alarmManager.cancel(pendingIntent);
+        if (pendingIntent != null) {
+            alarmManager.cancel(pendingIntent);
+        }
         Log.d("Service", "onDestroy");
-
     }
+
 
     @Nullable
     @Override

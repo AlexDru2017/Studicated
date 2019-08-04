@@ -23,17 +23,17 @@ import java.util.TreeSet;
 
 public class GPAActivity extends AppCompatActivity implements NewCourseDialog.NewCourseDialogListener, EditCourseDialog.EditCourseDialogListener {
     public static final String SHARED_PREFS = "mySharedPrefs";
-    SharedPreferences sharedPreferences;
-    SharedPreferences.Editor editor;
+    private SharedPreferences sharedPreferences;
+    private SharedPreferences.Editor editor;
 
     private int semesterNumber;
-    ArrayList<Semester> semestersList;
-    ListView simpleList;
-    ArrayList<Course> courseList;
-    CustomAdapter customAdapter;
-    TextView gpaText;
-    TextView semesterText;
-    double gpa;
+    private ArrayList<Semester> semestersList;
+    private ListView simpleList;
+    private ArrayList<Course> courseList;
+    private CustomAdapter customAdapter;
+    private TextView gpaText;
+    private TextView semesterText;
+    private double gpa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,23 +131,55 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
     public void applyTexts(String name, String credit, String grade) {
 
         Log.d("Applying texts", name + " " + credit + " " + grade);
-        Course newCourse = new Course(name, credit, grade);
-        courseList.add(newCourse);
-        customAdapter.notifyDataSetChanged();
-        saveDataToSP(newCourse, courseList.size());
-        calculateGPA();
+        if (isNameGood(name)) {
+            if (isCreditGood(credit)) {
+                if (isGradeGood(grade)) {
+                    Course newCourse = new Course(name, credit, grade);
+                    courseList.add(newCourse);
+                    customAdapter.notifyDataSetChanged();
+                    saveDataToSP(newCourse, courseList.size());
+                    calculateGPA();
+                } else {
+                    Toast.makeText(this, "Grade need to be between 0-100 ", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "Missing Field/s", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Missing Field/s", Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override
     public void applyTextsFromEdit(String name, String credit, String grade, int pos) {
         Log.d("Applying texts", name + " " + credit + " " + grade);
-        courseList.get(pos).setCredit(credit);
-        courseList.get(pos).setGrade(grade);
-        courseList.get(pos).setName(name);
-        Course saveCourse = new Course(name, credit, grade);
-        customAdapter.notifyDataSetChanged();
-        saveDataToSP(saveCourse, pos + 1);
-        calculateGPA();
+        if (isNameGood(name)) {
+            if (isCreditGood(credit)) {
+                if (isGradeGood(grade)) {
+                    courseList.get(pos).setCredit(credit);
+                    courseList.get(pos).setGrade(grade);
+                    courseList.get(pos).setName(name);
+                    Course saveCourse = new Course(name, credit, grade);
+                    customAdapter.notifyDataSetChanged();
+                    saveDataToSP(saveCourse, pos + 1);
+                    calculateGPA();
+                } else {
+                    Toast.makeText(this, "Grade need to be between 0-100 ", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                Toast.makeText(this, "Missing Field/s", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Missing Field/s", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean isNameGood(String name) {
+        return (!name.matches(""));
+    }
+
+    private boolean isCreditGood(String credit) {
+        return (!credit.matches(""));
     }
 
     private void calculateGPA() {
@@ -186,6 +218,17 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
         }
         updateListView();
 
+    }
+
+    /**
+     * @param courseGrade
+     * @return
+     */
+    private boolean isGradeGood(String courseGrade) {
+        if (!courseGrade.matches("")) {
+            return (Double.parseDouble(courseGrade) <= 100);
+        }
+        return false;
     }
 
     private void loadSemesters() {
