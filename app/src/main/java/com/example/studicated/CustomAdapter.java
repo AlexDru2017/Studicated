@@ -12,7 +12,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.zip.Inflater;
 
 public class CustomAdapter extends BaseAdapter {
     Context context;
@@ -54,8 +53,8 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.list_item, null);
-        name = (TextView) view.findViewById(R.id.courseName);
-        credit = (TextView) view.findViewById(R.id.credit);
+        name = (TextView) view.findViewById(R.id.reminderDialogTitle);
+        credit = (TextView) view.findViewById(R.id.reminder_date);
         grade = (TextView) view.findViewById(R.id.grade);
         ImageView editImage = (ImageView) view.findViewById(R.id.edit);
         editImage.setTag(i);

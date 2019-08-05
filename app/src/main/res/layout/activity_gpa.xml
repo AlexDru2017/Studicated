@@ -80,7 +80,7 @@
         android:orientation="vertical">
 
         <ListView
-            android:id="@+id/ListView"
+            android:id="@+id/remindersList"
             android:layout_width="fill_parent"
             android:layout_height="500dp"
             android:background="#C3E0F5"
@@ -98,7 +98,7 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/addCourse"
+            android:id="@+id/addReminder"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

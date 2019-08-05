@@ -1,10 +1,8 @@
 package com.example.studicated;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -46,8 +44,8 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
         semesterText = (TextView) findViewById(R.id.semesterText);
         Button nextButton = (Button) findViewById(R.id.nextSem);
         Button prevButton = (Button) findViewById(R.id.prevSem);
-        simpleList = (ListView) findViewById(R.id.ListView);
-        Button addCourse = (Button) findViewById(R.id.addCourse);
+        simpleList = (ListView) findViewById(R.id.remindersList);
+        Button addCourse = (Button) findViewById(R.id.addReminder);
         ImageView editImage = (ImageView) findViewById(R.id.edit);
 
         gpaText.setText(null); //CURRENTLY NULL, IF THERE ARE GRADES SAVED CALCULATE THE GPA!

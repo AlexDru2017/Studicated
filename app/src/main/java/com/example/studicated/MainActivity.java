@@ -1,5 +1,6 @@
 package com.example.studicated;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,6 +17,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Button gpaButton = (Button) findViewById(R.id.gpaButton);
         Button alarmButton = (Button) findViewById(R.id.alarmButton);
+        Button reminderButton = (Button) findViewById(R.id.remindersButton);
+
+
+
         gpaButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -24,6 +29,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        reminderButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("Button", "Reminder button was clicked");
+                Intent intent = new Intent(getApplicationContext(), ReminderActivity.class);
+                startActivity(intent);
+            }
+        });
+
         alarmButton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
