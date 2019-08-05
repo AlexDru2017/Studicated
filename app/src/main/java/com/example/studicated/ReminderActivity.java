@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
@@ -38,18 +39,26 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
 
     @Override
     public void applyTextsFromReminder(String title, String hour, String date, String text) {
-        Log.d("Apply Texts:", title + " " + hour + " " + date + " " + text);
-        Reminder newReminder = new Reminder(title, hour, date, text);
-        remindersList.add(newReminder);
-        for (int i = 0; i < remindersList.size(); i++) {
-            Log.d("Before Sort " + i, remindersList.get(i).toString());
+        if (!title.matches("") && !text.matches("") && !date.matches("") && !hour.matches("")) {
+            if (!text.contains(";") && !title.contains(";")) {
+                Log.d("Apply Texts:", title + " " + hour + " " + date + " " + text);
+                Reminder newReminder = new Reminder(title, hour, date, text);
+                remindersList.add(newReminder);
+                for (int i = 0; i < remindersList.size(); i++) {
+                    Log.d("Before Sort " + i, remindersList.get(i).toString());
+                }
+                Collections.sort(remindersList);
+                for (int i = 0; i < remindersList.size(); i++) {
+                    Log.d("After Sort " + i, remindersList.get(i).toString());
+                }
+                saveDataToFile();
+                remindersAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(this, "Please avoid using ;", Toast.LENGTH_LONG).show();
+            }
+        } else {
+            Toast.makeText(this, "Missing fields", Toast.LENGTH_LONG).show();
         }
-        Collections.sort(remindersList);
-        for (int i = 0; i < remindersList.size(); i++) {
-            Log.d("After Sort " + i, remindersList.get(i).toString());
-        }
-        saveDataToFile();
-        remindersAdapter.notifyDataSetChanged();
     }
 
     @Override
