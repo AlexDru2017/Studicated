@@ -1,6 +1,10 @@
 package com.example.studicated;
 
-public class Reminder {
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
+public class Reminder implements Comparable {
     private String title;
     private String hour;
     private String date;
@@ -44,4 +48,30 @@ public class Reminder {
     public void setText(String text) {
         this.text = text;
     }
+
+    @Override
+    public String toString() {
+        return "Reminder{" +
+                "title='" + title + '\'' +
+                ", hour='" + hour + '\'' +
+                ", date='" + date + '\'' +
+                ", text='" + text + '\'' +
+                '}';
+    }
+
+    public String mToString() {
+        return title + ";" + hour + ";" + date + ";" + text + "\n";
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        DateFormat f = new SimpleDateFormat("MM/dd/yyyy");
+        Reminder o2 = (Reminder) o;
+        try {
+            return f.parse(this.getDate()).compareTo(f.parse(o2.getDate()));
+        } catch (ParseException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
 }
