@@ -75,7 +75,7 @@ public class CustomAdapter extends BaseAdapter {
                 editCourse.setArguments(args);
                 editCourse.show(fm, "Edit_Dialog");
 
-            }
+             }
         });
         name.setText(item.get(i).getName());
         credit.setText(item.get(i).getCredit());

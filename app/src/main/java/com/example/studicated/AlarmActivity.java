@@ -21,6 +21,7 @@ public class AlarmActivity extends AppCompatActivity {
     private Switch alarmSwitch;
     private Intent intent;
     private BroadcastReceiver mBroadcastReceiver;
+    private Boolean isRegistered = false;
 
 
     @Override
@@ -29,18 +30,29 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
         init();
         registerReceiver(mBroadcastReceiver, new IntentFilter("broadCastName"));
+        isRegistered = true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mBroadcastReceiver);
+        try {
+            unregisterReceiver(mBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            Log.d("AlarmService", "onDestroy");
+        }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unregisterReceiver(mBroadcastReceiver);
+        try {
+            unregisterReceiver(mBroadcastReceiver);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            Log.d("AlarmService", "onPause");
+        }
     }
 
     private void init() {

@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -111,6 +113,14 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
     }
 
 
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+
     private void updatePositionInSP(int position) {
         Map<String, String> savedData = (Map<String, String>) sharedPreferences.getAll();
         for (Map.Entry<String, String> entry : savedData.entrySet()) {
@@ -171,6 +181,7 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
             Toast.makeText(this, "Missing Field/s", Toast.LENGTH_LONG).show();
         }
     }
+
 
     private boolean isNameGood(String name) {
         return (!name.matches(""));
