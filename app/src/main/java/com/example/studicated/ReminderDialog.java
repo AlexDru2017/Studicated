@@ -27,6 +27,7 @@ public class ReminderDialog extends AppCompatDialogFragment {
     private ReminderDialog.ReminderDialogListener listener;
 
     private DatePickerDialog.OnDateSetListener mOnDateSetListener;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -38,20 +39,19 @@ public class ReminderDialog extends AppCompatDialogFragment {
     }
 
 
-
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.reminder_dialog, null);
-        chooseTitle=  view.findViewById(R.id.reminderDialogTitle) ;
-        chooseText =  view.findViewById(R.id.reminderDialogText);
-        chooseDate =  view.findViewById(R.id.reminderDialogDate);
+        chooseTitle = view.findViewById(R.id.reminderDialogTitle);
+        chooseText = view.findViewById(R.id.reminderDialogText);
+        chooseDate = view.findViewById(R.id.reminderDialogDate);
 
         chooseDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Calendar mCalendar =  Calendar.getInstance();
+                Calendar mCalendar = Calendar.getInstance();
                 int year = mCalendar.get(Calendar.YEAR);
                 int month = mCalendar.get(Calendar.MONTH);
                 int day = mCalendar.get(Calendar.DAY_OF_MONTH);
@@ -60,7 +60,7 @@ public class ReminderDialog extends AppCompatDialogFragment {
                         getActivity(),
                         android.R.style.Theme_Holo_Light_Dialog_MinWidth,
                         mOnDateSetListener,
-                        year,month,day);
+                        year, month, day);
                 mDatePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 mDatePickerDialog.show();
 
@@ -70,15 +70,14 @@ public class ReminderDialog extends AppCompatDialogFragment {
         mOnDateSetListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                month = month+1;
-                String mDate = dayOfMonth+"/"+month+"/"+year;
+                month = month + 1;
+                String mDate = dayOfMonth + "/" + month + "/" + year;
                 chooseDate.setText(mDate);
             }
         };
 
 
-
-        chooseTime= (EditText) view.findViewById(R.id.reminderDialogHour) ;
+        chooseTime = view.findViewById(R.id.reminderDialogHour);
         chooseTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,8 +106,8 @@ public class ReminderDialog extends AppCompatDialogFragment {
                         String reminderDate = chooseDate.getText().toString();
                         String reminderHour = chooseTime.getText().toString();
                         String reminderText = chooseText.getText().toString();
-                        Log.d("onClick in Dialog:" , reminderTitle + " " +reminderHour + " " +reminderDate + " "+ reminderText);
-                        listener.applyTextsFromReminder(reminderTitle,reminderHour,reminderDate,reminderText);
+                        Log.d("onClick in Dialog:", reminderTitle + " " + reminderHour + " " + reminderDate + " " + reminderText);
+                        listener.applyTextsFromReminder(reminderTitle, reminderHour, reminderDate, reminderText);
                     }
                 });
 
@@ -118,7 +117,7 @@ public class ReminderDialog extends AppCompatDialogFragment {
 
 
     public interface ReminderDialogListener {
-        void applyTextsFromReminder(String title, String hour, String date , String text);
+        void applyTextsFromReminder(String title, String hour, String date, String text);
     }
 }
 

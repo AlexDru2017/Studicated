@@ -45,9 +45,6 @@ public class AlarmService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (pendingIntent != null) {
-            alarmManager.cancel(pendingIntent);
-        }
         Log.d("Service", "onDestroy");
     }
 

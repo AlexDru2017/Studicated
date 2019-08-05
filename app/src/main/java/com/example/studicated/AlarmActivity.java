@@ -29,8 +29,18 @@ public class AlarmActivity extends AppCompatActivity {
         setContentView(R.layout.activity_alarm);
         init();
         registerReceiver(mBroadcastReceiver, new IntentFilter("broadCastName"));
+    }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mBroadcastReceiver);
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(mBroadcastReceiver);
     }
 
     private void init() {
@@ -58,7 +68,6 @@ public class AlarmActivity extends AppCompatActivity {
                             new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     stopService(intent);
-                                    min.setText("");
                                     dialog.dismiss();
                                 }
                             });
@@ -80,7 +89,10 @@ public class AlarmActivity extends AppCompatActivity {
                     Bundle receive = intent.getExtras();
                     String message = receive.getString("message");
                     Log.d("mBroadcastReceiver", message);
-//                    stopService(intent);
+                    if (message.matches("1")) {
+                        intent = new Intent(getApplicationContext(), AlarmService.class);
+                        stopService(intent);
+                    }
                     min.setText("");
                     alarmSwitch.setChecked(false);
                 }
