@@ -1,15 +1,16 @@
 package com.example.studicated;
 
-import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,9 +18,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button gpaButton = (Button) findViewById(R.id.gpaButton);
-        Button alarmButton = (Button) findViewById(R.id.alarmButton);
-        Button reminderButton = (Button) findViewById(R.id.remindersButton);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        Button gpaButton = findViewById(R.id.gpaButton);
+        Button alarmButton = findViewById(R.id.alarmButton);
+        Button reminderButton = findViewById(R.id.remindersButton);
 
 
         gpaButton.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +52,31 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_about:
+                Log.d("MainActivity", "onOptionsItemSelected_menu_about");
+                AlertDialog alertDialog = new AlertDialog.Builder(MainActivity.this).create();
+                alertDialog.setTitle("About");
+                alertDialog.setMessage("Studicated\n\nWas created by:\nHai Cohen\nAlex Drutman\n©2019 All Rights Reserved");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                alertDialog.show();
+                return true;
+            case R.id.menu_exit:
+                Log.d("MainActivity", "onOptionsItemSelected_menu_exit");
+                System.exit(0);
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

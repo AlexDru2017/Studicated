@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Switch;
@@ -22,7 +24,7 @@ public class AlarmActivity extends AppCompatActivity {
     private Intent intent;
     private BroadcastReceiver mBroadcastReceiver;
     private Boolean isRegistered = false;
-
+    private Boolean isTurnOn = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,29 +35,41 @@ public class AlarmActivity extends AppCompatActivity {
         isRegistered = true;
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("AlarmService", "onDestroy");
         try {
+            if (!isTurnOn) {
+                unregisterReceiver(mBroadcastReceiver);
+            }
             unregisterReceiver(mBroadcastReceiver);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            Log.d("AlarmService", "onDestroy");
         }
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("AlarmService", "onPause");
         try {
-            unregisterReceiver(mBroadcastReceiver);
+            if (!isTurnOn) {
+                unregisterReceiver(mBroadcastReceiver);
+            }
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
-            Log.d("AlarmService", "onPause");
         }
     }
 
     private void init() {
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         min = findViewById(R.id.alarmEditText);
         alarmSwitch = findViewById(R.id.alarmSwitch);
         alarmSwitch.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +79,9 @@ public class AlarmActivity extends AppCompatActivity {
                 if (isChecked) {
                     intent = new Intent(getApplicationContext(), AlarmService.class);
                     if (!min.getText().toString().matches("")) {
+                        isTurnOn = true;
                         intent.putExtra("time", min.getText().toString());
+                        intent.putExtra("mode", "on");
                         startService(intent);
                         Toast.makeText(getApplicationContext(), "Alarm set in" + min.getText().toString() + " minutes", Toast.LENGTH_LONG).show();
                     } else {

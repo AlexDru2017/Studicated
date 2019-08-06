@@ -8,6 +8,8 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -65,6 +67,7 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         remindersList = new ArrayList<>();
         readDateFromFile();
         Button addReminder = findViewById(R.id.addReminder);
@@ -130,6 +133,12 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
         remindersAdapter.notifyDataSetChanged();
     }
 
+    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
     private void saveDataToFile() {
         try {
             FileOutputStream fos = openFileOutput(FILE_NAME, Context.MODE_PRIVATE);
@@ -164,4 +173,5 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
             e.printStackTrace();
         }
     }
+
 }

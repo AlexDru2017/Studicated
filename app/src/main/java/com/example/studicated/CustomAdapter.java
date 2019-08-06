@@ -24,10 +24,10 @@ public class CustomAdapter extends BaseAdapter {
     TextView grade;
     int pos;
 
-    public CustomAdapter(Context applicationContext, ArrayList<Course> item , FragmentManager fragMan) {
+    public CustomAdapter(Context applicationContext, ArrayList<Course> item, FragmentManager fragMan) {
         this.context = context;
         this.item = item;
-        fm=fragMan;
+        fm = fragMan;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
@@ -53,10 +53,10 @@ public class CustomAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.list_item, null);
-        name = (TextView) view.findViewById(R.id.reminderDialogTitle);
-        credit = (TextView) view.findViewById(R.id.reminder_date);
-        grade = (TextView) view.findViewById(R.id.grade);
-        ImageView editImage = (ImageView) view.findViewById(R.id.edit);
+        name = view.findViewById(R.id.reminderDialogTitle);
+        credit = view.findViewById(R.id.reminder_date);
+        grade = view.findViewById(R.id.grade);
+        ImageView editImage = view.findViewById(R.id.edit);
         editImage.setTag(i);
 
         editImage.setOnClickListener(new View.OnClickListener() {
@@ -64,18 +64,18 @@ public class CustomAdapter extends BaseAdapter {
             public void onClick(View v) {
 
                 Log.d("Image View position: ", v.getTag().toString());
-                pos= Integer.parseInt(v.getTag().toString());
+                pos = Integer.parseInt(v.getTag().toString());
                 Log.d("current item: ", item.get(pos).toString());
-                Bundle args= new Bundle();
-                args.putString("name",item.get(pos).getName());
-                args.putString("grade",item.get(pos).getGrade());
-                args.putString("credits",item.get(pos).getCredit());
-                args.putInt("position",pos) ;
+                Bundle args = new Bundle();
+                args.putString("name", item.get(pos).getName());
+                args.putString("grade", item.get(pos).getGrade());
+                args.putString("credits", item.get(pos).getCredit());
+                args.putInt("position", pos);
                 EditCourseDialog editCourse = new EditCourseDialog();
                 editCourse.setArguments(args);
                 editCourse.show(fm, "Edit_Dialog");
 
-             }
+            }
         });
         name.setText(item.get(i).getName());
         credit.setText(item.get(i).getCredit());

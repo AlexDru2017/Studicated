@@ -25,7 +25,6 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
     public static final String SHARED_PREFS = "mySharedPrefs";
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
-
     private int semesterNumber;
     private ArrayList<Semester> semestersList;
     private ListView simpleList;
@@ -39,16 +38,17 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gpa);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         loadSemesters(); //loads all the semesters' grades
         semesterNumber = 1; //maybe start from the last saved semester?
-        gpaText = (TextView) findViewById(R.id.gpaText);
-        semesterText = (TextView) findViewById(R.id.semesterText);
-        Button nextButton = (Button) findViewById(R.id.nextSem);
-        Button prevButton = (Button) findViewById(R.id.prevSem);
-        simpleList = (ListView) findViewById(R.id.remindersList);
-        Button addCourse = (Button) findViewById(R.id.addReminder);
-        ImageView editImage = (ImageView) findViewById(R.id.edit);
+        gpaText = findViewById(R.id.gpaText);
+        semesterText = findViewById(R.id.semesterText);
+        Button nextButton = findViewById(R.id.nextSem);
+        Button prevButton = findViewById(R.id.prevSem);
+        simpleList = findViewById(R.id.remindersList);
+        Button addCourse = findViewById(R.id.addReminder);
+        ImageView editImage = findViewById(R.id.edit);
 
         gpaText.setText(null); //CURRENTLY NULL, IF THERE ARE GRADES SAVED CALCULATE THE GPA!
         semesterText.setText(Integer.toString(semesterNumber));
@@ -113,10 +113,9 @@ public class GPAActivity extends AppCompatActivity implements NewCourseDialog.Ne
     }
 
 
-
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
+//        MenuInflater inflater = getMenuInflater();
+//        inflater.inflate(R.menu.menu, menu);
         return true;
     }
 
