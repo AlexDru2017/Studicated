@@ -1,7 +1,11 @@
 package com.example.studicated;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 
 import android.os.Environment;
@@ -28,6 +32,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +43,10 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
     private ArrayList<Reminder> remindersList;
     private RemindersAdapter remindersAdapter;
     private ListView remindersViewList;
+    private AlarmManager alarm_manager;
+    private Context context;
+    private Calendar calendar;
+    private Intent intent;
 
     @Override
     public void applyTextsFromReminder(String title, String hour, String date, String text) {
@@ -51,10 +60,18 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
                 }
                 Collections.sort(remindersList);
                 for (int i = 0; i < remindersList.size(); i++) {
+                    if (remindersList.get(i).getTitle().matches(newReminder.getTitle())) {
+                        addNewReminder(newReminder, i);
+                        break;
+                    }
+                }
+                for (int i = 0; i < remindersList.size(); i++) {
                     Log.d("After Sort " + i, remindersList.get(i).toString());
                 }
                 saveDataToFile();
                 remindersAdapter.notifyDataSetChanged();
+
+
             } else {
                 Toast.makeText(this, "Please avoid using ;", Toast.LENGTH_LONG).show();
             }
@@ -63,10 +80,36 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
         }
     }
 
+    private void addNewReminder(Reminder newReminder, int i) {
+        String[] date = newReminder.getDate().split("/");
+        String[] time = newReminder.getHour().split(":");
+        calendar.set(Calendar.YEAR, Integer.parseInt(date[2]));
+        calendar.set(Calendar.MONTH, Integer.parseInt(date[1]) - 1);
+        calendar.set(Calendar.DAY_OF_MONTH, Integer.parseInt(date[0]));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(time[0]));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
+        calendar.set(Calendar.SECOND, 0);
+        Log.d("Alarm Receiver", "i is: "+i);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarm_manager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        }
+
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders);
+        context = this;
+        alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+        calendar = Calendar.getInstance();
+
+        intent = new Intent(context, AlarmReceiver.class);
+
+
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         remindersList = new ArrayList<>();
         readDateFromFile();
@@ -117,6 +160,10 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
                                 saveDataToFile();
                                 remindersAdapter.notifyDataSetChanged();
                                 dialog.dismiss();
+
+                                Log.d("Alarm Receiver", "position is: "+position);
+                                PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(context,position, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                alarm_manager.cancel(cancelPendingIntent);
                             }
                         });
                 alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "Cancel",

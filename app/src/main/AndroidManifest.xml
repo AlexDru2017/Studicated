@@ -49,7 +49,9 @@
         </activity>
 
         <receiver android:name=".Alarm"></receiver>
+        <receiver android:name=".AlarmReceiver"></receiver>
         <service android:name=".AlarmService"></service>
+        <service android:name=".RingtonePlayingService" android:enabled="true"></service>
     </application>
 
 </manifest>
