@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/course_name"
         android:hint="Course Credits"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:id="@+id/course_grade"

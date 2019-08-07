@@ -8,14 +8,14 @@
         android:id="@+id/reminderDialogTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Reminder Title" />
+        android:hint="Reminder's Title" />
 
     <EditText
         android:id="@+id/reminderDialogDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/reminderDialogTitle"
-        android:hint="DD/MM/YYYY"
+        android:hint="Select Date"
         android:ems="10"
         android:focusableInTouchMode="true"
         android:cursorVisible="false"
@@ -30,7 +30,7 @@
         android:layout_below="@+id/reminderDialogDate"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:hint="Choose the time"
+        android:hint="Select Hour"
         android:focusableInTouchMode="true"
         android:cursorVisible="false"
         android:focusable="false"
@@ -44,7 +44,7 @@
         android:layout_height="150dp"
         android:layout_below="@+id/reminderDialogHour"
         android:gravity="top"
-        android:hint="Insert your reminder's text"
+        android:hint="Insert your Reminder's Text"
         android:inputType="text|textMultiLine" />
 
 

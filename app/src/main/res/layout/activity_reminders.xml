@@ -3,21 +3,34 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffcc"
     android:orientation="vertical">
 
 
+    <TextView
+        android:id="@+id/remindersText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:text="Reminders:"
+        android:textColor="#000000"
+        android:textSize="24dp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="580dp"
+        android:layout_height="wrap_content"
         android:layout_margin="5dp"
+        android:background="#474747"
         android:orientation="vertical">
 
         <ListView
             android:id="@+id/remindersList"
             android:layout_width="fill_parent"
             android:layout_height="580dp"
-            android:background="#C3E0F5"
-            android:divider="#FFFFFF"
+            android:layout_margin="2dp"
+            android:background="#FBF793"
+            android:divider="#E9E9A8"
             android:dividerHeight="2dp"
             android:footerDividersEnabled="false" />
 
@@ -35,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/rounded_edge"
+            android:background="@drawable/rounded_edge2"
             android:text="Add Reminder"
             android:textColor="#FFFFFF" />
     </LinearLayout>

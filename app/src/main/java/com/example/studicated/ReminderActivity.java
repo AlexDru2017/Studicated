@@ -38,6 +38,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class ReminderActivity extends AppCompatActivity implements ReminderDialog.ReminderDialogListener {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if(getIntent().getExtras()!=null){
+            Log.d("getIntent onResume","is not NULL");
+            ViewReminderDialog dialog = new ViewReminderDialog();
+            Bundle args = new Bundle();
+            args.putString("title", remindersList.get(getIntent().getExtras().getInt("requestCode")).getTitle());
+            args.putString("hour", remindersList.get(getIntent().getExtras().getInt("requestCode")).getHour());
+            args.putString("date", remindersList.get(getIntent().getExtras().getInt("requestCode")).getDate());
+            args.putString("text", remindersList.get(getIntent().getExtras().getInt("requestCode")).getText());
+            dialog.setArguments(args);
+            dialog.show(getSupportFragmentManager(), "View Reminder Dialog");
+
+        }
+    }
 
     private static final String FILE_NAME = "reminders.txt";
     private ArrayList<Reminder> remindersList;
@@ -62,7 +78,6 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
                 for (int i = 0; i < remindersList.size(); i++) {
                     if (remindersList.get(i).getTitle().matches(newReminder.getTitle())) {
                         addNewReminder(newReminder, i);
-                        break;
                     }
                 }
                 for (int i = 0; i < remindersList.size(); i++) {
@@ -90,6 +105,9 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
         calendar.set(Calendar.MINUTE, Integer.parseInt(time[1]));
         calendar.set(Calendar.SECOND, 0);
         Log.d("Alarm Receiver", "i is: "+i);
+        intent = new Intent(context, AlarmReceiver.class);
+        intent.putExtra("text",newReminder.getText());
+        intent.putExtra("requestCode",i);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, i, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -103,11 +121,12 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reminders);
+
         context = this;
         alarm_manager = (AlarmManager) getSystemService(ALARM_SERVICE);
         calendar = Calendar.getInstance();
 
-        intent = new Intent(context, AlarmReceiver.class);
+
 
 
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -160,9 +179,9 @@ public class ReminderActivity extends AppCompatActivity implements ReminderDialo
                                 saveDataToFile();
                                 remindersAdapter.notifyDataSetChanged();
                                 dialog.dismiss();
-
+                                Intent deleteIntent = new Intent(context, AlarmReceiver.class);
                                 Log.d("Alarm Receiver", "position is: "+position);
-                                PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(context,position, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                                PendingIntent cancelPendingIntent = PendingIntent.getBroadcast(context,position, deleteIntent, PendingIntent.FLAG_UPDATE_CURRENT);
                                 alarm_manager.cancel(cancelPendingIntent);
                             }
                         });
