@@ -10,9 +10,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class AlarmService extends Service {
 
     private PendingIntent pendingIntent;
@@ -22,8 +19,6 @@ public class AlarmService extends Service {
     private Intent alarmIntent;
     private Notification notification;
     private long time;
-    private Timer myTimer;
-    private TimerTask myTask;
 
     @Override
     public void onCreate() {
@@ -70,6 +65,9 @@ public class AlarmService extends Service {
     public void onDestroy() {
         super.onDestroy();
         Log.d("AlarmService", "onDestroy");
+        if (pendingIntent != null) {
+            alarmManager.cancel(pendingIntent);
+        }
     }
 
 
