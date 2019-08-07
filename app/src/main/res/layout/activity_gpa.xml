@@ -82,7 +82,7 @@
         <ListView
             android:id="@+id/remindersList"
             android:layout_width="fill_parent"
-            android:layout_height="560dp"
+            android:layout_height="500dp"
             android:background="#C3E0F5"
             android:divider="#FFFFFF"
             android:dividerHeight="2dp"

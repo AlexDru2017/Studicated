@@ -28,6 +28,7 @@ public class AlarmService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
 //        myTask = new TimerTask() {
 //            public void run() {
 //                Log.d("AlarmService", "TimerTask_onCreate");
@@ -51,13 +52,15 @@ public class AlarmService extends Service {
             alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
             time = System.currentTimeMillis() + Integer.parseInt(input) * 1000 * 15;
             alarmManager.set(AlarmManager.RTC_WAKEUP, time, pendingIntent);
-            notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
+            notification = new NotificationCompat
+                    .Builder(this, App.CHANNEL_ID)
                     .setContentTitle("Alarm Service")
                     .setContentText("Service")
                     .setSmallIcon(R.drawable.ic_android)
-                    .setContentIntent(pendingIntentService).build();
+                    .setContentIntent(pendingIntentService)
+                    .build();
             startForeground(1, notification);
-        }else if(mode.matches("off")){
+        } else if (mode.matches("off")) {
             stopSelf();
         }
         return START_NOT_STICKY;
@@ -66,7 +69,7 @@ public class AlarmService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("Service", "onDestroy");
+        Log.d("AlarmService", "onDestroy");
     }
 
 

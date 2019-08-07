@@ -37,7 +37,7 @@ public class Alarm extends BroadcastReceiver {
             context.sendBroadcast(i);
             Intent intent = new Intent(context.getApplicationContext(), AlarmService.class);
             intent.putExtra("mode", "off");
-            startService(intent);
+//            startService(intent);
             Log.d("Alarm", "onCompletion");
         }
 
