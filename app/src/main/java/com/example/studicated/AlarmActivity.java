@@ -78,7 +78,6 @@ public class AlarmActivity extends AppCompatActivity {
                 if (isChecked) {
                     intent = new Intent(getApplicationContext(), AlarmService.class);
                     if (!min.getText().toString().matches("")) {
-                        isTurnOn = true;
                         intent.putExtra("time", min.getText().toString());
                         intent.putExtra("mode", "on");
                         startService(intent);
