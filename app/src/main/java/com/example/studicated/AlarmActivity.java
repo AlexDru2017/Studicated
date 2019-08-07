@@ -81,7 +81,7 @@ public class AlarmActivity extends AppCompatActivity {
                         intent.putExtra("time", min.getText().toString());
                         intent.putExtra("mode", "on");
                         startService(intent);
-                        Toast.makeText(getApplicationContext(), "Alarm set in" + min.getText().toString() + " minutes", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Alarm set in " + min.getText().toString() + " minutes", Toast.LENGTH_LONG).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "Please enter min's before setting the alarm", Toast.LENGTH_LONG).show();
                         alarmSwitch.setChecked(false);
