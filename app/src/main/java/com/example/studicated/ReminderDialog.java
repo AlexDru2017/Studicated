@@ -76,7 +76,6 @@ public class ReminderDialog extends AppCompatDialogFragment {
             }
         };
 
-
         chooseTime = view.findViewById(R.id.reminderDialogHour);
         chooseTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,7 +113,6 @@ public class ReminderDialog extends AppCompatDialogFragment {
 
         return builder.create();
     }
-
 
     public interface ReminderDialogListener {
         void applyTextsFromReminder(String title, String hour, String date, String text);
