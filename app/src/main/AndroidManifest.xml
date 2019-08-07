@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".ReminderActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -24,6 +25,7 @@
 
         <activity
             android:name=".AlarmActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -32,13 +34,15 @@
         </activity>
         <activity
             android:name=".GPAActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName=".MainActivity">
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,8 +54,11 @@
 
         <receiver android:name=".Alarm"></receiver>
         <receiver android:name=".AlarmReceiver"></receiver>
+
         <service android:name=".AlarmService"></service>
-        <service android:name=".RingtonePlayingService" android:enabled="true"></service>
+        <service
+            android:name=".RingtonePlayingService"
+            android:enabled="true"></service>
     </application>
 
 </manifest>
